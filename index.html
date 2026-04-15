@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Advertalyze × ЛСР — ИИ-сериал</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{--lsr:#C41230;--lsr-light:#fbeaee;--adv:#0F172A;--bg:#FAFAFA}
+    *{box-sizing:border-box}
+    body{font-family:'Manrope',system-ui;background:var(--bg)}
+    .lsr-clip{clip-path:polygon(15% 0,100% 0,100% 85%,85% 100%,0 100%,0 15%)}
+    .fade{opacity:0;transform:translateY(24px);transition:.7s cubic-bezier(.22,1,.36,1)}
+    .fade.show{opacity:1;transform:translateY(0)}
+    .card{transition:all .3s cubic-bezier(.22,1,.36,1)}
+    .card:hover{transform:translateY(-4px);box-shadow:0 12px 32px -10px rgba(196,18,48,.18)}
+
+    /* Accordion — чистый, без полосок */
+    .acc-body{max-height:0;overflow:hidden;opacity:0;transition:max-height .45s cubic-bezier(.22,1,.36,1),opacity .3s,padding .3s;padding-top:0;padding-bottom:0}
+    .acc.open .acc-body{max-height:800px;opacity:1;padding-top:16px;padding-bottom:20px}
+    .acc-chevron{transition:transform .25s ease}
+    .acc.open .acc-chevron{transform:rotate(180deg)}
+
+    .bar-fill{width:0;transition:width 1.2s cubic-bezier(.22,1,.36,1)}
+    .bar-fill.go{width:var(--w)}
+    .phone-glow{box-shadow:0 0 60px 10px rgba(196,18,48,.15),0 20px 60px -20px rgba(15,23,42,.4)}
+    .tech-bg{background-color:var(--bg);background-image:radial-gradient(rgba(15,23,42,.05) 1px,transparent 1px);background-size:24px 24px}
+    .lsr-glow{background:radial-gradient(800px 400px at 95% -5%,rgba(196,18,48,.08),transparent 60%)}
+    .tab-jk{border:1px solid #e2e8f0;background:#fff;color:#475569;font-weight:700;transition:all .2s}
+    .tab-jk:hover{border-color:#cbd5e1}
+    .tab-jk.active{background:var(--lsr)!important;color:#fff!important;border-color:var(--lsr)!important}
+
+    /* ЖК image crossfade */
+    .jk-img{position:absolute;inset:0;opacity:0;transition:opacity .5s ease}
+    .jk-img.visible{opacity:1}
+  </style>
+</head>
+<body class="text-slate-900 tech-bg">
+<div class="fixed inset-0 pointer-events-none lsr-glow z-[-1]"></div>
+
+<!-- HEADER -->
+<header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200">
+  <div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <div class="flex items-center gap-4">
+      <a href="https://advertalyze.ru/" target="_blank" class="flex items-center gap-0 group shrink-0">
+        <svg viewBox="0 0 200 36" class="h-6 sm:h-7" xmlns="http://www.w3.org/2000/svg">
+          <text x="0" y="28" fill="#0F172A" font-family="Manrope,system-ui" font-weight="800" font-size="28" letter-spacing="-0.5">Advertalyze</text>
+          <rect x="178" y="28" width="14" height="3" rx="1.5" fill="#C41230"/>
+        </svg>
+      </a>
+      <div class="h-6 w-px bg-slate-300 hidden sm:block"></div>
+      <div class="hidden sm:flex gap-1">
+        <div class="w-6 h-6 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[10px]">Л</div>
+        <div class="w-6 h-6 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[10px]">С</div>
+        <div class="w-6 h-6 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[10px]">Р</div>
+      </div>
+    </div>
+    <a href="#packages" class="px-5 py-2.5 bg-[var(--adv)] text-white rounded-xl font-semibold hover:bg-[var(--lsr)] transition-colors text-sm shadow-lg shadow-slate-900/10">Обсудить проект</a>
+  </div>
+</header>
+
+<div class="max-w-[1280px] mx-auto px-4 lg:flex gap-8">
+  <aside class="hidden lg:block w-56 shrink-0 pt-10 sticky top-20 h-fit">
+    <div class="mb-6 px-3">
+      <svg viewBox="0 0 200 36" class="h-5 opacity-40" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="28" fill="#0F172A" font-family="Manrope,system-ui" font-weight="800" font-size="28" letter-spacing="-0.5">Advertalyze</text>
+        <rect x="178" y="28" width="14" height="3" rx="1.5" fill="#C41230"/>
+      </svg>
+    </div>
+    <nav class="space-y-1 text-sm font-medium">
+      <a href="#hero" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Главная</a>
+      <a href="#cases" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Опыт брендов</a>
+      <a href="#why" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Почему сейчас</a>
+      <a href="#priority" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">ЖК</a>
+      <a href="#audience" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Аудитория</a>
+      <a href="#plot" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Сценарии</a>
+      <a href="#forecast" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Показатели</a>
+      <a href="#examples" class="block py-2.5 px-3 rounded-lg hover:bg-[var(--lsr-light)] hover:text-[var(--lsr)] transition">Примеры</a>
+    </nav>
+  </aside>
+
+  <main class="flex-1 pb-10">
+
+    <!-- HERO -->
+    <section id="hero" class="pt-14 pb-16 fade">
+      <div class="grid lg:grid-cols-2 gap-10 items-center">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1.5 bg-slate-900 text-white text-[11px] font-bold uppercase tracking-wider rounded-full mb-6">
+            <span class="w-1.5 h-1.5 bg-[var(--lsr)] rounded-full animate-pulse"></span>
+            AI-Production Proposal
+          </div>
+          <h1 class="text-[40px] lg:text-[56px] font-extrabold leading-[1.05] tracking-tight">ЛОМАЕМ ШАБЛОНЫ:<br>ЛСР СЕВЕРО-ЗАПАД</h1>
+          <p class="mt-6 text-lg text-slate-600 leading-relaxed">ЛСР.Петербург станет первым девелопером в Санкт-Петербурге с собственным вертикальным сериалом. Мы создаем не рекламу, а медиаконтент, который ждут.</p>
+          <div class="mt-8">
+            <a href="https://vc.ru/ai/2840896-ii-serialy-neuropersonazhi-dubayskaya-mechta" target="_blank" class="inline-flex items-center gap-2 px-7 py-3.5 bg-[var(--lsr)] text-white rounded-xl font-bold hover:opacity-90 transition shadow-lg shadow-[var(--lsr)]/20">
+              Смотреть кейсы
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <div class="relative w-[300px] h-[580px] bg-slate-900 rounded-[44px] border-[12px] border-slate-800 overflow-hidden phone-glow">
+            <div class="w-full aspect-[9/16] rounded-2xl overflow-hidden shadow-lg">
+  <iframe
+    src="https://www.youtube.com/embed/ePhD_oW_zF8"
+    title="YouTube Shorts"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen
+    class="w-full h-full"
+  ></iframe>
+</a>
+</div>
+</a>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-slate-900/30"></div>
+            <div class="absolute top-4 left-4 bg-[var(--lsr)] text-white text-[11px] px-3 py-1.5 rounded-lg font-bold tracking-wide flex items-center gap-1.5">
+              <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>ИИ-СЕРИАЛ
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-4">
+              <div class="bg-white/10 backdrop-blur-xl rounded-2xl p-4 border border-white/10">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 bg-[var(--lsr)] rounded-xl grid place-items-center text-white text-lg font-bold">1</div>
+                  <div><div class="text-white text-sm font-bold">Серия 1 · «Начало»</div><div class="text-white/70 text-[11px]">ЖК Ржевский парк</div></div>
+                </div>
+                <div class="mt-3 h-1.5 w-full bg-white/10 rounded-full overflow-hidden"><div class="h-full w-2/3 bg-[var(--lsr)] rounded-full animate-pulse"></div></div>
+                <div class="flex justify-between mt-2 text-[10px] text-white/50 font-medium"><span>00:32</span><span>00:48</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASES -->
+    <section id="cases" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Опыт других брендов</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm p-6">
+  <div class="flex justify-between items-center gap-4">
+    <span class="font-bold text-lg">ГК ФСК</span>
+  </div>
+
+  <div class="mt-3 text-sm text-slate-600 leading-relaxed">
+    Первый в России ИИ-анимационный сериал от девелопера: как недвижимость стала медиаконтентом без бюджета анимационной студии.
+При этом сама визуальная реализация выглядит довольно слабой и скорее тяготеет к типичному «брейнрот»-контенту — идея интересная, но исполнение пока не дотягивает до современных возможностей ИИ-визуализации. Сегодня подобные кейсы можно собирать значительно качественнее, глубже и эстетичнее, если использовать текущий стек генеративных инструментов более продуманно и с продакшн-подходом.
+    
+    <div class="mt-4">
+      <a class="inline-flex items-center gap-1.5 text-[var(--lsr)] font-bold hover:underline"
+         href="https://rcmm.ru/press-relizy/71939-pervyj-v-rossii-ii-animacionnyj-serial-ot-developera-kak-nedvizhimost-stala-mediakontentom-bez-bjudzheta-animacionnoj-studii.html"
+         target="_blank">
+        Читать →
+      </a>
+    </div>
+  </div>
+</div>
+<div class="card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+  
+  <div class="p-6">
+    <div class="font-bold text-lg">Яндекс Путешествия</div>
+
+    <div class="mt-4 text-sm text-slate-600 leading-relaxed">
+      Любимая всеми «цыпадрипа», которая копит на первое путешествие в своей жизни разбила сердца многих пользователей Instagram.
+    </div>
+
+    <!-- Плашки -->
+    <div class="grid grid-cols-2 gap-3 mt-5">
+      
+      <div class="bg-slate-50 rounded-xl px-4 py-3 text-center flex flex-col justify-center">
+        <div class="font-black text-lg leading-tight">7 500</div>
+        <div class="text-[11px] font-medium text-slate-500 uppercase tracking-wide mt-1">
+          подписчиков / мес
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-xl px-4 py-3 text-center flex flex-col justify-center">
+        <div class="font-black text-lg leading-tight">3 млн+</div>
+        <div class="text-[11px] font-medium text-slate-500 uppercase tracking-wide mt-1">
+          охват
+        </div>
+      </div>
+
+      <div class="bg-slate-50 rounded-xl px-4 py-3 text-center flex flex-col justify-center">
+        <div class="font-black text-lg leading-tight">ER 50%+</div>
+        <div class="text-[11px] font-medium text-slate-500 uppercase tracking-wide mt-1">
+          вовлеченность
+        </div>
+      </div>
+
+      <div class="bg-[var(--lsr-light)] rounded-xl px-4 py-3 text-center flex flex-col justify-center">
+        <div class="font-black text-[var(--lsr)] text-lg leading-tight">~0 ₽</div>
+        <div class="text-[11px] font-bold text-[var(--lsr)] uppercase tracking-wide mt-1">
+          медиабюджет
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Ссылки -->
+    <div class="mt-5 flex gap-4">
+      <a class="text-[var(--lsr)] font-bold hover:underline" href="https://www.instagram.com/reel/DWWtKDPDaTq/" target="_blank">
+        Reels →
+      </a>
+      <a class="text-slate-500 font-bold hover:underline" href="https://vc.ru/ai/2840896-ii-serialy-neuropersonazhi-dubayskaya-mechta" target="_blank">
+        Vc.ru →
+      </a>
+    </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHY -->
+    <section id="why" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Почему сейчас</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-5 flex justify-between items-center gap-3 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-slate-800">Минимальные расходы</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-5 text-sm text-slate-600 leading-relaxed">На подготовку 1 серии у нас уйдет в среднем 3-5 дней. Не нужно тратить ресурсы на поиск продакшен-команды, только наши ИИ-дизайнеры и сценаристы. А значит минимальное количество командных потерь.</div>
+        </div>
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-5 flex justify-between items-center gap-3 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-slate-800">Динамика покупки</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-5 text-sm text-slate-600 leading-relaxed">По данным «Авито Недвижимости» за 2026 год, в Санкт-Петербурге на первичном рынке жилья наибольшей популярностью пользовался Невский район (18,6%). Самой активной категорией покупателей стали молодые люди 25-34 лет.</div>
+        </div>
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-5 flex justify-between items-center gap-3 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-slate-800">Масштабируемость</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-5 text-sm text-slate-600 leading-relaxed">Формат сериала легко масштабируется за счёт дистрибуции на дополнительные площадки. Помимо Instagram, мы можем расширять охваты через TikTok, YouTube Shorts и другие соцсети, адаптируя контент под особенности каждой платформы и кратно увеличивая суммарные охваты.</div>
+        </div>
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-5 flex justify-between items-center gap-3 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-slate-800">Виральность</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-5 text-sm text-slate-600 leading-relaxed">Короткие сюжетные видео с элементами сторителлинга и ИИ-производства изначально заточены под виральное распространение. Такой контент лучше подхватывается алгоритмами платформ, чаще попадает в рекомендации и обеспечивает органический рост просмотров без пропорционального увеличения бюджета.</div>
+      </div>
+    </section>
+    <!-- PRIORITY ЖК -->
+    <section id="priority" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Приоритетные ЖК</h2>
+      </div>
+      <div class="flex flex-wrap gap-2.5 mb-8" id="jk-tabs">
+        <button data-tab="mile" data-img="https://www.lsr.ru/upload/iblock/4f4/morskaya_milya_mainpage_min.jpg" class="tab-jk px-5 py-2.5 rounded-xl shadow-sm active">Морская миля</button>
+        <button data-tab="rjev" data-img="https://www.lsr.ru/upload/iblock/b57/rzhevskiy_park_mainpage_min.jpg" class="tab-jk px-5 py-2.5 rounded-xl shadow-sm">Ржевский парк</button>
+        <button data-tab="oktyabr" data-img="https://www.lsr.ru/upload/iblock/d7e/oktyabrskaya_nab_mainpage_min.jpg" class="tab-jk px-5 py-2.5 rounded-xl shadow-sm">Октябрьская наб.</button>
+        <button data-tab="zerk" data-img="https://www.lsr.ru/upload/iblock/097/zerkalnyy_ruchey_mainpage_min.jpg" class="tab-jk px-5 py-2.5 rounded-xl shadow-sm">Зеркальный ручей</button>
+        <button data-tab="neva" data-img="https://www.lsr.ru/upload/iblock/eeb/neva_residence_mainpage_min.jpg" class="tab-jk px-5 py-2.5 rounded-xl shadow-sm">Нева Резиденс</button>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-6 items-start">
+        <div class="p-8 bg-white border border-slate-200 rounded-[24px] min-h-[240px] shadow-sm relative overflow-hidden">
+          <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--lsr)] to-[#E8476A]"></div>
+
+          <div data-pane="mile">
+            <div class="flex items-center gap-2 mb-4"><div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div><span class="text-xs text-emerald-600 font-bold uppercase tracking-wider">Заселение · дом 6</span></div>
+            <h3 class="font-extrabold text-2xl mb-3">ЖК «Морская миля»</h3>
+            <p class="text-slate-600 leading-relaxed">Удачный момент для сторителлинга: герои переезжают из съемного жилья в свою квартиру у воды. Близость к КАД и хорошо выстроенная инфраструктура усиливают ценность предложения.</p>
+            <div class="mt-6 inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-500">12 серий × 60 сек</div>
+          </div>
+
+          <div data-pane="rjev" class="hidden">
+            <div class="flex items-center gap-2 mb-4"><div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div><span class="text-xs text-emerald-600 font-bold uppercase tracking-wider">Заселение · дом 4</span></div>
+            <h3 class="font-extrabold text-2xl mb-3">ЖК «Ржевский парк»</h3>
+            <p class="text-slate-600 leading-relaxed">Парковая среда и семейная инфраструктура. Сценарий строится вокруг выбора «район для жизни»: переезд с ребенком, ипотека и уверенность в будущем.</p>
+            <div class="mt-6 inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-500">12 серий × 60 сек</div>
+          </div>
+
+          <div data-pane="oktyabr" class="hidden">
+            <div class="flex items-center gap-2 mb-4"><div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div><span class="text-xs text-emerald-600 font-bold uppercase tracking-wider">Заселение · дом 6</span></div>
+            <h3 class="font-extrabold text-2xl mb-3">ЖК «Октябрьская набережная»</h3>
+            <p class="text-slate-600 leading-relaxed">Видовые квартиры в сильной локации. Акцент на статус и инвестиционную логику: «платить за аренду» vs «фиксировать стоимость владения».</p>
+            <div class="mt-6 inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-500">12 серий × 60 сек</div>
+          </div>
+
+          <div data-pane="zerk" class="hidden">
+            <div class="flex items-center gap-2 mb-4"><div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div><span class="text-xs text-amber-600 font-bold uppercase tracking-wider">Старт продаж</span></div>
+            <h3 class="font-extrabold text-2xl mb-3">ЖК «Зеркальный ручей»</h3>
+            <p class="text-slate-600 leading-relaxed">Для FOMO-механики: «успеть по стартовой цене». Мы усиливаем ощущение момента — серия за серией подводим к решению купить сейчас.</p>
+            <div class="mt-6 inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-500">8–12 серий × 60 сек</div>
+          </div>
+
+          <div data-pane="neva" class="hidden">
+            <div class="flex items-center gap-2 mb-4"><div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div><span class="text-xs text-blue-600 font-bold uppercase tracking-wider">Премиум</span></div>
+            <h3 class="font-extrabold text-2xl mb-3">ЖК «Нева Резиденс»</h3>
+            <p class="text-slate-600 leading-relaxed">Для аудитории с высоким доходом: архитектура, приватность, «жизнь на уровне». История строится вокруг выбора «правильного жилья» и статуса владения.</p>
+            <div class="mt-6 inline-flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-500">8 серий × 60 сек</div>
+          </div>
+        </div>
+
+        <!-- Рендер ЖК — переключается вместе с табами -->
+        <div class="aspect-[16/10] rounded-[24px] overflow-hidden border border-slate-200 bg-slate-100 shadow-lg relative" id="jk-render">
+          <img data-render="mile"    class="jk-img visible object-cover w-full h-full" src="https://cdn.static.lsr.ru/upload/kelnik.estate/6fb/tx4l6ap8cwlqzcgmsq7ay9gszg5etvo6/MM_metro_2560%D1%851440.jpg" alt="Морская миля">
+          <img data-render="rjev"    class="jk-img object-cover w-full h-full" src="https://cdn.static.lsr.ru/upload/kelnik.estate/3ce/lv9voeojpc81cg94gdtm73dpcpco0xbe/Rje_03_new.jpg" alt="Ржевский парк">
+          <img data-render="oktyabr" class="jk-img object-cover w-full h-full" src="https://cdn.static.lsr.ru/upload/kelnik.estate/53c/qjcfhld2c47qwd84ntfhzfngsqy3hq0n/2560%D1%851440%20(7).jpg" alt="Октябрьская набережная">
+          <img data-render="zerk"    class="jk-img object-cover w-full h-full" src="https://cdn.static.lsr.ru/upload/kelnik.estate/a19/h6mo9cz444ltpggauqmjvoi01y58l85y/ZR_03.jpg" alt="Зеркальный ручей">
+          <img data-render="neva"    class="jk-img object-cover w-full h-full" src="https://cdn.static.lsr.ru/upload/kelnik.estate/b2a/5u5thwlkzn7d15q6wwbydtsha7pgwbcl/2560x1440px%20(1).jpg" alt="Нева Резиденс">
+        </div>
+      </div>
+    </section>
+
+    <!-- AUDIENCE -->
+    <section id="audience" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Аудитория</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+
+  <div class="card bg-white border-2 border-[var(--lsr)] rounded-2xl shadow-sm p-6">
+    <div>
+      <div class="font-bold text-lg">Молодые семьи и специалисты</div>
+      <div class="text-xs font-bold text-[var(--lsr)] uppercase tracking-wider mt-1">
+        25–40 лет · основной фокус
+      </div>
+    </div>
+
+    <div class="mt-4 text-sm text-slate-600 leading-relaxed">
+      Покупают первое жилье или расширяются, используя ипотеку и материнский капитал. Ищут современные ЖК с инфраструктурой.
+    </div>
+  </div>
+
+  <div class="card bg-white border-2 border-[var(--lsr)] rounded-2xl shadow-sm p-6">
+    <div>
+      <div class="font-bold text-lg">Региональные покупатели</div>
+      <div class="text-xs font-bold text-[var(--lsr)] uppercase tracking-wider mt-1">
+        Переезд в СПб · основной фокус
+      </div>
+    </div>
+
+    <div class="mt-4 text-sm text-slate-600 leading-relaxed">
+      Люди, переезжающие из других регионов России в Санкт-Петербург в поисках карьерного роста и стабильности.
+    </div>
+  </div>
+
+  <div class="card bg-white border rounded-2xl shadow-sm p-6">
+    <div class="font-bold text-lg text-slate-700">Инвесторы</div>
+
+    <div class="mt-4 text-sm text-slate-600 leading-relaxed">
+      Приобретают недвижимость на стадии строительства для последующей перепродажи или сдачи в аренду, так как ЛСР — надежный застройщик с высокой доходностью.
+    </div>
+  </div>
+
+  <div class="card bg-white border rounded-2xl shadow-sm p-6">
+    <div class="font-bold text-lg text-slate-700">Покупатели «бизнес-класса»</div>
+
+    <div class="mt-4 text-sm text-slate-600 leading-relaxed">
+      Люди с доходом выше среднего, ищущие жилье в престижных районах с уникальной архитектурой и хорошим видом.
+    </div>
+      </div>
+    </section>
+
+    <!-- PLOT -->
+    <section id="plot" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Сценарные линии</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-5">
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-6 flex justify-between items-center gap-4 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-lg">Сюжет А — «Переезд»</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 text-sm text-slate-600 leading-relaxed">
+            Молодая семья с маленьким ребенком переезжает из провинции в Санкт-Петербург. Муж — специалист среднего уровня (120–150 тыс ₽/мес), жена в декрете. Аренда — 50–60 тыс (>50% дохода).
+            <br><br>Каждое списание — деньги «в никуда». Они сравнивают аренду с ипотекой и понимают: платеж сопоставим, но ведет к собственному жилью. Финал: либо «временно», либо своя квартира.
+          </div>
+        </div>
+        <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-6 flex justify-between items-center gap-4 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-lg">Сюжет Б — «Собака из приюта»</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 text-sm text-slate-600 leading-relaxed">
+            Девушка после университета, первая работа в СПб. Снимает квартиру, привязывается к собаке из приюта — но арендодатель запрещает животных.
+            <br><br>Копит на первый взнос. Финал: забирает собаку и открывает дверь уже своей квартиры. Дом — это свобода быть собой.
+          </div>
+        </div>
+      <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-6 flex justify-between items-center gap-4 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-lg">Сюжет В — «Соседи»</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 text-sm text-slate-600 leading-relaxed">
+            Несколько героев из разных квартир в одном ЖК — молодая пара, фрилансер, инвестор, семья с ребёнком. Через короткие сцены показывается их повседневная жизнь, пересечения и микроистории, что создаёт ощущение «живого» дома и усиливает эффект узнавания. Истории можно придумать абсолютно разного характера, как в сериале «Саша / Таня», «Универ: Новая общага» и т.д., которые давно были выпущены на телеэкранах. Основа всего — независимость сюжетов. Мы можем публиковать столько историй в рамках одного сериала, сколько нам захочется.
+          </div>
+        </div>
+      <div class="acc card bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+          <button class="acc-btn w-full text-left p-6 flex justify-between items-center gap-4 hover:bg-slate-50/50 transition">
+            <span class="font-bold text-lg">Сюжет Г — «Любовь и голуби»</span>
+            <svg class="acc-chevron w-5 h-5 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="acc-body px-6 text-sm text-slate-600 leading-relaxed">
+            История пары, которая проходит этапы отношений через призму жилья: от свиданий и совместной аренды с её ограничениями — к осознанию необходимости «своего места». Далее — поиск квартиры, обсуждение будущего и выбор ЖК, где через бытовые сцены нативно раскрываются его преимущества. Финал — переезд в собственную квартиру как символ нового этапа отношений, с возможностью продолжения истории.
+          </div>
+</div>
+      <p class="mt-5 text-xs text-slate-500 font-medium">* Описание сюжетов носит ознакомительный характер и может быть уточнено после брифа с Заказчиком.</div>
+    </section>
+
+    <!-- FORECAST -->
+    <section id="forecast" class="py-14 fade">
+      <div class="flex items-center gap-3 mb-8">
+        <div class="w-2 h-8 bg-[var(--lsr)] rounded-sm"></div>
+        <h2 class="text-3xl font-extrabold tracking-tight">Плановые показатели</h2>
+      </div>
+<div class="flex flex-wrap gap-4 mb-8 text-sm font-bold text-slate-600">
+  <label class="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-xl border-2 transition-all peer-checked:bg-red-50"
+         id="label-inst">
+    <input type="checkbox" class="platform accent-[var(--lsr)]" value="inst" checked> Instagram
+  </label>
+  <label class="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-xl border-2 transition-all"
+         id="label-yt">
+    <input type="checkbox" class="platform accent-[var(--lsr)]" value="yt"> YouTube Shorts
+  </label>
+  <label class="flex items-center gap-2 cursor-pointer select-none px-4 py-2.5 rounded-xl border-2 transition-all"
+         id="label-tt">
+    <input type="checkbox" class="platform accent-[var(--lsr)]" value="tt"> TikTok
+  </label>
+</div>
+
+<!-- Множитель -->
+<div class="flex items-center gap-3 mb-6" id="multiplierBadge">
+  <span class="px-3 py-1 rounded-lg bg-slate-100 text-xs font-bold text-slate-500" id="multLabel">×1</span>
+  <span class="text-xs text-slate-400" id="multHint">добавьте площадку — охват вырастет в 1.5×</span>
+</div>
+
+<!-- Слайдер -->
+<div class="mb-2 flex justify-between text-xs font-bold text-slate-400">
+  <span>1 ролик</span>
+  <span id="epLabel" class="text-slate-700 text-sm">1 ролик</span>
+  <span>12 роликов</span>
+</div>
+<input type="range" id="episodes" min="1" max="12" value="1"
+       class="w-full mb-8 accent-[var(--lsr)] h-2 rounded-full cursor-pointer">
+
+<!-- Результат -->
+<div class="flex items-end gap-3">
+  <div class="text-4xl font-black text-[var(--lsr)] tabular-nums transition-all duration-300" id="reachOutput">30 000</div>
+  <div class="text-sm text-slate-500 pb-1">просмотров</div>
+</div>
+
+<script>
+(() => {
+  const BASE_PER_EPISODE = 30000;
+
+  const slider     = document.getElementById('episodes');
+  const output     = document.getElementById('reachOutput');
+  const epLabel    = document.getElementById('epLabel');
+  const multLabel  = document.getElementById('multLabel');
+  const multHint   = document.getElementById('multHint');
+  const checkboxes = document.querySelectorAll('.platform');
+
+  function recalc() {
+    const episodes  = parseInt(slider.value);
+    const platforms = [...checkboxes].filter(c => c.checked).length;
+
+    // ×1 → ×1.5 → ×2
+    const multiplier = platforms <= 1 ? 1 : platforms === 2 ? 1.5 : 2;
+    const total = Math.round(BASE_PER_EPISODE * episodes * multiplier);
+
+    // Анимация числа
+    output.textContent = total.toLocaleString('ru-RU');
+    output.classList.remove('scale-105');
+    void output.offsetWidth;          // reflow
+    output.classList.add('scale-105');
+    setTimeout(() => output.classList.remove('scale-105'), 200);
+
+    // Подпись слайдера
+    const word = episodes === 1 ? 'ролик' : episodes < 5 ? 'ролика' : 'роликов';
+    epLabel.textContent = episodes + ' ' + word;
+
+    // Бейдж множителя
+    multLabel.textContent = '×' + multiplier;
+    if (multiplier > 1) {
+      multLabel.classList.add('bg-[var(--lsr)]', 'text-white');
+      multLabel.classList.remove('bg-slate-100', 'text-slate-500');
+      multHint.textContent = platforms === 3
+        ? 'все площадки подключены — максимальный охват'
+        : 'ещё +1 площадка = ×2';
+    } else {
+      multLabel.classList.remove('bg-[var(--lsr)]', 'text-white');
+      multLabel.classList.add('bg-slate-100', 'text-slate-500');
+      multHint.textContent = 'добавьте площадку';
+    }
+
+    // Подсветка лейблов
+    checkboxes.forEach(cb => {
+      const label = cb.closest('label');
+      if (cb.checked) {
+        label.style.borderColor = '#C41230';
+        label.style.background  = '#fbeaee';
+      } else {
+        label.style.borderColor = '#e2e8f0';
+        label.style.background  = '#fff';
+      }
+    });
+  }
+
+  slider.addEventListener('input', recalc);
+  checkboxes.forEach(cb => cb.addEventListener('change', recalc));
+
+  recalc();            // init
+})();
+</script>
+      <p class="mt-4 text-xs text-slate-500 font-medium">* Примерные прогнозируемые показатели на основе кейсов.</p>
+    </section>
+
+    <!-- Примеры небрендовых проектов -->
+<!-- Примеры роликов -->
+<section class="py-16 fade">
+
+  <div class="flex items-start gap-3 mb-6">
+    <div class="w-2 h-10 bg-[var(--lsr)] rounded-sm mt-1"></div>
+
+    <div>
+      <h2 class="text-3xl font-extrabold tracking-tight">
+        Примеры роликов
+      </h2>
+
+      <p class="mt-4 text-sm text-slate-600 leading-relaxed max-w-3xl">
+        Сериальный контент стал одним из самых вирусных форматов в соцсетях — от анимационных историй до документальных и гибридных проектов.
+        Генеративные инструменты снизили стоимость продакшна и позволили масштабировать тестирование форматов.
+        <br><br>
+        Небольшие блоги (до 7 000 подписчиков) за месяц суммарно собрали около
+        <span class="font-bold text-[var(--lsr)]">800 млн просмотров</span>,
+        выпустив до 10 000 коротких роликов.
+      </p>
+    </div>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+
+    <!-- 1 -->
+    <a href="https://www.instagram.com/reel/DU6cMg7DAQL/"
+       target="_blank"
+       class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:border-[var(--lsr)]/40 transition flex flex-col">
+
+      <div class="aspect-[9/16] bg-slate-100">
+        <iframe class="w-full h-full"
+                src="https://www.instagram.com/reel/DU6cMg7DAQL/embed"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <div class="font-bold text-base text-slate-800">
+          Сюжетный короткий формат
+        </div>
+
+        <div class="flex gap-2">
+          <div class="flex-1 bg-slate-50 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">1.2M</div>
+            <div class="text-[10px] text-slate-400 uppercase">views</div>
+          </div>
+
+          <div class="flex-1 bg-slate-50 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">12K</div>
+            <div class="text-[10px] text-slate-400 uppercase">subs</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 2 -->
+    <a href="https://www.instagram.com/reel/DVqNfyFjc2U/"
+       target="_blank"
+       class="bg-[var(--adv)] text-white border border-slate-800 rounded-3xl overflow-hidden shadow-xl transform md:-translate-y-2 flex flex-col">
+
+      <div class="aspect-[9/16] bg-slate-900">
+        <iframe class="w-full h-full"
+                src="https://www.instagram.com/reel/DVqNfyFjc2U/embed"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <div class="font-bold text-base">
+          Драматический мини-сериал
+        </div>
+
+        <div class="flex gap-2">
+          <div class="flex-1 bg-white/10 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">200K</div>
+            <div class="text-[10px] text-white/60 uppercase">views</div>
+          </div>
+
+          <div class="flex-1 bg-white/10 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">3K</div>
+            <div class="text-[10px] text-white/60 uppercase">subs</div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- 3 -->
+    <a href="https://www.instagram.com/reel/DWbgv3cjHcI/"
+       target="_blank"
+       class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:border-[var(--lsr)]/40 transition flex flex-col">
+
+      <div class="aspect-[9/16] bg-slate-100">
+        <iframe class="w-full h-full"
+                src="https://www.instagram.com/reel/DWbgv3cjHcI/embed"
+                frameborder="0"
+                scrolling="no"
+                allowfullscreen>
+        </iframe>
+      </div>
+
+      <div class="p-5 flex flex-col gap-4">
+        <div class="font-bold text-base text-slate-800">
+          Нарративный вирусный формат
+        </div>
+
+        <div class="flex gap-2">
+          <div class="flex-1 bg-slate-50 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">876K</div>
+            <div class="text-[10px] text-slate-400 uppercase">views</div>
+          </div>
+
+          <div class="flex-1 bg-slate-50 rounded-xl py-2 px-3 text-center">
+            <div class="font-semibold text-sm">18K</div>
+            <div class="text-[10px] text-slate-400 uppercase">subs</div>
+          </div>
+        </div>
+
+        <div class="text-[11px] text-slate-400">
+          +100% growth since 13.02
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</section>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mt-10 py-10 border-t border-slate-200 flex flex-col items-center">
+      <div class="flex items-center justify-center gap-6 mb-5">
+        <a href="https://advertalyze.ru/" target="_blank" class="opacity-60 hover:opacity-100 transition">
+          <svg viewBox="0 0 200 36" class="h-5" xmlns="http://www.w3.org/2000/svg">
+            <text x="0" y="28" fill="#0F172A" font-family="Manrope,system-ui" font-weight="800" font-size="28" letter-spacing="-0.5">Advertalyze</text>
+            <rect x="178" y="28" width="14" height="3" rx="1.5" fill="#C41230"/>
+          </svg>
+        </a>
+        <div class="w-px h-4 bg-slate-300"></div>
+        <div class="flex gap-1 opacity-60">
+          <div class="w-5 h-5 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[9px]">Л</div>
+          <div class="w-5 h-5 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[9px]">С</div>
+          <div class="w-5 h-5 bg-[var(--lsr)] lsr-clip grid place-items-center text-white font-extrabold text-[9px]">Р</div>
+        </div>
+      </div>
+      <p class="text-xs font-medium text-slate-500">Северо-Запад · Предложение по ИИ-сериалу · 2026</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+// Fade in
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if (e.isIntersecting) e.target.classList.add('show') });
+}, { threshold: .08 });
+document.querySelectorAll('.fade').forEach(el => io.observe(el));
+
+// Accordion — чистый toggle
+document.querySelectorAll('.acc-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const acc = btn.closest('.acc');
+    if (acc) acc.classList.toggle('open');
+  });
+});
+
+// Tabs ЖК — подсветка + смена рендера
+document.querySelectorAll('.tab-jk').forEach(b => {
+  b.addEventListener('click', () => {
+    const tabId = b.dataset.tab;
+
+    // Подсветка таба
+    document.querySelectorAll('.tab-jk').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+
+    // Смена текстовой панели
+    document.querySelectorAll('[data-pane]').forEach(p => p.classList.add('hidden'));
+    const pane = document.querySelector('[data-pane="' + tabId + '"]');
+    if (pane) pane.classList.remove('hidden');
+
+    // Смена рендера (crossfade)
+    document.querySelectorAll('.jk-img').forEach(img => img.classList.remove('visible'));
+    const render = document.querySelector('[data-render="' + tabId + '"]');
+    if (render) render.classList.add('visible');
+  });
+});
+
+// Progress bars
+const barObserver = new IntersectionObserver(es => {
+  es.forEach(e => {
+    if (e.isIntersecting) e.target.querySelectorAll('.bar-fill').forEach(b => b.classList.add('go'));
+  });
+}, { threshold: .35 });
+const barsEl = document.getElementById('bars');
+if (barsEl) barObserver.observe(barsEl);
+</script>
+</body>
+</html>
